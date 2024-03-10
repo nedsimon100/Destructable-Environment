@@ -21,7 +21,8 @@ public class DestructiveObject : MonoBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>(); 
+        rb = GetComponent<Rigidbody>();
+        brokenScale = cubeMesh.transform.localScale.x;
     }
 
     private void Update()
@@ -61,7 +62,7 @@ public class DestructiveObject : MonoBehaviour
             {
                 for (float z = 0; z < cubeDepth; z += brokenScale)
                 {
-                    GameObject cube = Instantiate(cubeMesh,ObjToDest.transform.position+new Vector3(x,y,z),Quaternion.identity);
+                    GameObject cube = Instantiate(cubeMesh,ObjToDest.transform.position+new Vector3(x,y,z),Quaternion.identity,cubeMesh.transform);
                     if((cube.transform.position-this.transform.position).magnitude< destructionRadius)
                     {
                         cube.AddComponent<Rigidbody>();
