@@ -675,7 +675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5800529885c6a3544bd6b938fc914fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubeMesh: {fileID: 7615598292693902461, guid: 59b944aebc8e49b4bb8e03996cee3bb2,
+  cubeMesh: {fileID: 1460516576748260660, guid: 80456bcd439c44c48b86c296cffc1a3b,
     type: 3}
   rb: {fileID: 1335106915}
   Non0Speed: 0
