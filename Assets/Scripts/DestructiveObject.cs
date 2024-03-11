@@ -55,12 +55,12 @@ public class DestructiveObject : MonoBehaviour
         float cubeDepth = ObjToDest.transform.localScale.z;
         cubeMesh.gameObject.GetComponent<Transform>().localScale = new Vector3(brokenScale, brokenScale, brokenScale);
         
-
-        for(float x = 0; x < cubeWidth; x += brokenScale)
+        //since the transform position is in the centre of the object, the loop has to go to the negative half of the width, height, and depth of the object to re-generate it without shifting it about.
+        for(float x = -cubeWidth/2; x < cubeWidth/2; x += brokenScale)
         {
-            for (float y = 0; y < cubeHeight; y += brokenScale)
+            for (float y = -cubeHeight/2; y < cubeHeight/2; y += brokenScale)
             {
-                for (float z = 0; z < cubeDepth; z += brokenScale)
+                for (float z = -cubeDepth/2; z < cubeDepth / 2; z += brokenScale)
                 {
                     GameObject cube = Instantiate(cubeMesh,ObjToDest.transform.position+new Vector3(x,y,z),Quaternion.identity);
                     if((cube.transform.position-this.transform.position).magnitude< destructionRadius)
