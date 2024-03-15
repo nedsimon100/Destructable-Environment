@@ -13,7 +13,9 @@ public class DestructiveObject : MonoBehaviour
 
     public LayerMask Destructable;
 
-    public float brokenScale;
+    public int pieceCount = 100;
+
+    private float brokenScale;
 
     public float destructionRadius;
 
@@ -22,7 +24,7 @@ public class DestructiveObject : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        brokenScale = cubeMesh.transform.localScale.x;
+      //  brokenScale = cubeMesh.transform.localScale.x;
     }
 
     private void Update()
@@ -36,6 +38,8 @@ public class DestructiveObject : MonoBehaviour
     {
         destructionRadius = this.transform.localScale.x + Non0Speed * blastRadiusMult;
         Collider[] objectsToDestroy = Physics.OverlapSphere(this.transform.position, destructionRadius, Destructable);
+
+        //brokenScale = ((2*destructionRadius)^3)/
 
         foreach(Collider Obj in objectsToDestroy)
         {
