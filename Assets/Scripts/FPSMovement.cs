@@ -15,6 +15,8 @@ public class FPSMovement : MonoBehaviour
     public float MaxSpeed = 10f;
     [Header("connected Objects")]
     public GameObject PlayerObject;
+    [Header("Jump Controlls")]
+    public float jumpForce = 10f;
 
 
     private Vector2 MoveDirection;
@@ -35,6 +37,11 @@ public class FPSMovement : MonoBehaviour
     {
         RotateCamera();
         movePlayerInputs();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Jump();
+        }
     }
     private void FixedUpdate()
     {
@@ -63,5 +70,17 @@ public class FPSMovement : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         PlayerObject.transform.rotation = Quaternion.Euler(0, yRotation, 0);
+    }
+    public void Jump()
+    {
+        if (IsGrounded())
+        {
+            rb.AddForce(UnityEngine.Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+    }
+    private bool IsGrounded()
+    {
+        float distanceToGround = GetComponent<Collider>().bounds.extents.y + 1.0f;
+        return Physics.Raycast(transform.position, UnityEngine.Vector3.down, distanceToGround);
     }
 }
