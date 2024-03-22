@@ -15,7 +15,7 @@ public class DestructiveObject : MonoBehaviour
 
     public int pieceCount = 100;
 
-    private float brokenScale = 0.5f; //if script crashes at the time of writing, change this value to 0.05f;
+    private float brokenScale = 0.5f; //if script crashes at the time of writing, change this value to 0.5f;
 
     public float destructionRadius;
 
@@ -56,7 +56,7 @@ public class DestructiveObject : MonoBehaviour
         float cubeWidth = ObjToDest.transform.localScale.x;
         float cubeHeight = ObjToDest.transform.localScale.y;
         float cubeDepth = ObjToDest.transform.localScale.z;
-        cubeMesh.gameObject.GetComponent<Transform>().localScale = new Vector3(brokenScale, brokenScale, brokenScale);
+        cubeMesh.gameObject.GetComponent<Transform>().localScale = new Vector3(brokenScale, brokenScale, brokenScale); //this permamently alters the dimensions of the prefab!
         
         //since the transform position is in the centre of the object, the loop has to go to the negative half of the width, height, and depth of the object to re-generate it without shifting it about.
         for(float x = -cubeWidth/2; x < cubeWidth/2; x += brokenScale)
