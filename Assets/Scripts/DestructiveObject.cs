@@ -54,14 +54,14 @@ public class DestructiveObject : MonoBehaviour
     private void destroyRange()
     {
  
-        brokenScale = destructionRadius / pieceCount;
+        brokenScale = destructionRadius / pieceCount;//scale of broken pieces changes depending on scale of destruction
 
 
         Collider[] objectsToDestroy = Physics.OverlapSphere(this.transform.position, destructionRadius, Destructable);
 
         foreach (Collider Obj in objectsToDestroy)
         {
-            if (Obj.gameObject.transform.localScale.x <= brokenScale*2f)
+            if (Obj.gameObject.transform.localScale.x < brokenScale*2f) // if cube is less that the size of 8 broken cubes dont break and just adds rigidbody
             {
                 Obj.gameObject.AddComponent<Rigidbody>();
                 Obj.gameObject.GetComponent<Rigidbody>().AddForce(((Obj.transform.position - this.transform.position).normalized * destructionForce) / (Obj.transform.position - this.transform.position).magnitude, ForceMode.Impulse);
@@ -79,8 +79,9 @@ public class DestructiveObject : MonoBehaviour
         }
     }
 
-    public void RandColour(GameObject obj)
+    public void RandColour(GameObject obj) // for debugging to show different shapes and how object was destroyed
     {
+        
         obj.GetComponent<Renderer>().material.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
     }
 
@@ -202,11 +203,11 @@ public class DestructiveObject : MonoBehaviour
             {
                 for (float z = -cubeDepth/2 + (brokenScale / 2); z < cubeDepth / 2; z += brokenScale)
                 {
-                    GameObject cube = Instantiate(cubeMesh,ObjToDest.transform.position+new Vector3(x,y,z),Quaternion.identity);
+                    GameObject cube = Instantiate(cubeMesh, ObjToDest.transform.position + new Vector3(x, y, z), Quaternion.identity);
                     cube.layer = ObjToDest.layer;
                     cube.tag = ObjToDest.tag;
                     RandColour(cube);
-                    if ((cube.transform.position-this.transform.position).magnitude< destructionRadius)
+                    if ((cube.transform.position-this.transform.position).magnitude < destructionRadius)
                     {
                         cube.AddComponent<Rigidbody>();
                         cube.GetComponent<Rigidbody>().AddForce(((cube.transform.position-this.transform.position).normalized*destructionForce)/ (cube.transform.position - this.transform.position).magnitude, ForceMode.Impulse);
