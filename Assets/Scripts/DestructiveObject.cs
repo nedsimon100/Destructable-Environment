@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.VirtualTexturing;
 
 public class DestructiveObject : MonoBehaviour
 {
@@ -11,11 +12,14 @@ public class DestructiveObject : MonoBehaviour
     public float Non0Speed;
     public float blastRadiusMult = 1f;
 
+    // Particle implementation
+    public ParticleSystem particles;
+
     public LayerMask Destructable;
 
     public int pieceCount = 100;
 
-    private float brokenScale;
+    private float brokenScale = 0.5f;
 
     public float destructionRadius;
 
@@ -41,7 +45,13 @@ public class DestructiveObject : MonoBehaviour
 
         //brokenScale = ((2*destructionRadius)^3)/
 
-        foreach(Collider Obj in objectsToDestroy)
+         var emitParams = new ParticleSystem.EmitParams();
+         emitParams.position = this.transform.position;
+         emitParams.applyShapeToPosition = true;
+         emitParams.velocity = this.GetComponent<Rigidbody>().velocity;
+        particles.Emit(emitParams, 10);
+
+        foreach (Collider Obj in objectsToDestroy)
         {
             switch(Obj.gameObject.tag)
             {
@@ -71,6 +81,17 @@ public class DestructiveObject : MonoBehaviour
                     {
                         cube.AddComponent<Rigidbody>();
                         cube.GetComponent<Rigidbody>().AddForce(((cube.transform.position-this.transform.position).normalized*destructionForce)/ (cube.transform.position - this.transform.position).magnitude, ForceMode.Impulse);
+                        ParticleSystem cubeParticles = cube.GetComponent<ParticleSystem>();
+
+                        // Particle test
+                        //particles.Stop();
+                        // print(this.transform.position.y);
+
+                        //var emitParams = new ParticleSystem.EmitParams();
+                        //emitParams.applyShapeToPosition = true;
+                        //emitParams.velocity = cube.GetComponent<Rigidbody>().velocity;
+                        //cubeParticles.Emit(emitParams, 4);
+                        cubeParticles.Play();
                     }
                 }
             }
