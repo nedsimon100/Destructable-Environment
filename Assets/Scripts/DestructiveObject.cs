@@ -15,7 +15,7 @@ public class DestructiveObject : MonoBehaviour
 
     public int pieceCount = 100;
 
-    private float brokenScale;
+    private float brokenScale = 0.5f; //if script crashes at the time of writing, change this value to 0.05f;
 
     public float destructionRadius;
 
@@ -24,7 +24,6 @@ public class DestructiveObject : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-      //  brokenScale = cubeMesh.transform.localScale.x;
     }
 
     private void Update()
