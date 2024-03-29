@@ -32,7 +32,7 @@ public class DestructiveObject : MonoBehaviour
 
     private void Update()
     {
-        if(rb.velocity.magnitude > 0 && Non0Speed != 0f)
+        if(rb.velocity.magnitude > 0 )
         {
             Non0Speed = rb.velocity.magnitude;
         }
@@ -50,15 +50,15 @@ public class DestructiveObject : MonoBehaviour
         }
         
     }
-    private void OnCollisionStay(Collision collision)
-    {
-        Non0Speed = 0f;
-    }
+    //private void OnCollisionStay(Collision collision)
+    //{
+    //    Non0Speed = 0f;
+    //}
 
-    private void OnCollisionExit(Collision collision)
-    {
-        Non0Speed = 1f;
-    }
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    Non0Speed = 1f;
+    //}
 
     private void destroyRange()
     {
@@ -72,7 +72,7 @@ public class DestructiveObject : MonoBehaviour
         {
             if (Obj.gameObject.transform.localScale.x < brokenScale*2f) // if cube is less that the size of 8 broken cubes dont break and just adds rigidbody
             {
-                if (Obj.GetComponent<Rigidbody>() != null)
+                if (Obj.GetComponent<Rigidbody>() == null)
                 {
                     Obj.gameObject.AddComponent<Rigidbody>();
                    
@@ -238,9 +238,9 @@ public class DestructiveObject : MonoBehaviour
         float cubeHeight = ObjToDest.transform.localScale.y;
         float cubeDepth = ObjToDest.transform.localScale.z;
 
-        float brokenScaleX = cubeWidth / Mathf.RoundToInt(cubeWidth / brokenScale);
-        float brokenScaleY = cubeHeight / Mathf.RoundToInt(cubeHeight / brokenScale);
-        float brokenScaleZ = cubeDepth / Mathf.RoundToInt(cubeDepth / brokenScale);
+        float brokenScaleX = cubeWidth / Mathf.CeilToInt(cubeWidth / brokenScale);
+        float brokenScaleY = cubeHeight / Mathf.CeilToInt(cubeHeight / brokenScale);
+        float brokenScaleZ = cubeDepth / Mathf.CeilToInt(cubeDepth / brokenScale);
 
 
         cubeMesh.gameObject.GetComponent<Transform>().localScale = new Vector3(brokenScaleX, brokenScaleY, brokenScaleZ);
