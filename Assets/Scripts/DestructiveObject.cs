@@ -8,7 +8,7 @@ public class DestructiveObject : MonoBehaviour
     public GameObject cubeMesh;
 
     public Rigidbody rb;
-    private float Non0Speed;
+    private float Non0Speed = 1;
     public float blastRadiusMult = 0.1f;
 
     public LayerMask Destructable;
@@ -32,7 +32,7 @@ public class DestructiveObject : MonoBehaviour
 
     private void Update()
     {
-        if(rb.velocity.magnitude > 0)
+        if(rb.velocity.magnitude > 0 && Non0Speed != 0f)
         {
             Non0Speed = rb.velocity.magnitude;
         }
@@ -50,6 +50,15 @@ public class DestructiveObject : MonoBehaviour
         }
         
     }
+    private void OnCollisionStay(Collision collision)
+    {
+        Non0Speed = 0f;
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        Non0Speed = 1f;
+    }
 
     private void destroyRange()
     {
@@ -63,7 +72,11 @@ public class DestructiveObject : MonoBehaviour
         {
             if (Obj.gameObject.transform.localScale.x < brokenScale*2f) // if cube is less that the size of 8 broken cubes dont break and just adds rigidbody
             {
-                Obj.gameObject.AddComponent<Rigidbody>();
+                if (Obj.GetComponent<Rigidbody>() != null)
+                {
+                    Obj.gameObject.AddComponent<Rigidbody>();
+                   
+                }
                 Obj.gameObject.GetComponent<Rigidbody>().AddForce(((Obj.transform.position - this.transform.position).normalized * destructionForce) / (Obj.transform.position - this.transform.position).magnitude, ForceMode.Impulse);
             }
             else
@@ -95,6 +108,11 @@ public class DestructiveObject : MonoBehaviour
             cubeoutRange.layer = ObjToSlice.layer;
             cubeoutRange.tag = ObjToSlice.tag;
 
+            if (ObjToSlice.GetComponent<Rigidbody>() != null)
+            {
+                cubeoutRange.gameObject.AddComponent<Rigidbody>();
+            }
+
             RandColour(cubeoutRange);
 
             cubeMesh.gameObject.GetComponent<Transform>().localScale = new Vector3(ObjToSlice.transform.localScale.x- cubeoutRange.transform.localScale.x, ObjToSlice.transform.localScale.y, ObjToSlice.transform.localScale.z);
@@ -110,6 +128,11 @@ public class DestructiveObject : MonoBehaviour
             GameObject cubeoutRange = Instantiate(cubeMesh, ObjToSlice.transform.position + new Vector3((-ObjToSlice.transform.localScale.x / 2) + (cubeMesh.gameObject.GetComponent<Transform>().localScale.x / 2), 0, 0), Quaternion.identity);
             cubeoutRange.layer = ObjToSlice.layer;
             cubeoutRange.tag = ObjToSlice.tag;
+
+            if (ObjToSlice.GetComponent<Rigidbody>() != null)
+            {
+                cubeoutRange.gameObject.AddComponent<Rigidbody>();
+            }
 
             RandColour(cubeoutRange);
 
@@ -128,6 +151,11 @@ public class DestructiveObject : MonoBehaviour
             cubeoutRange.layer = ObjToSlice.layer;
             cubeoutRange.tag = ObjToSlice.tag;
 
+            if (ObjToSlice.GetComponent<Rigidbody>() != null)
+            {
+                cubeoutRange.gameObject.AddComponent<Rigidbody>();
+            }
+
             RandColour(cubeoutRange);
 
             cubeMesh.gameObject.GetComponent<Transform>().localScale = new Vector3( ObjToSlice.transform.localScale.x, ObjToSlice.transform.localScale.y - cubeoutRange.transform.localScale.y, ObjToSlice.transform.localScale.z);
@@ -143,6 +171,11 @@ public class DestructiveObject : MonoBehaviour
             GameObject cubeoutRange = Instantiate(cubeMesh, ObjToSlice.transform.position + new Vector3( 0, (-ObjToSlice.transform.localScale.y / 2) + (cubeMesh.gameObject.GetComponent<Transform>().localScale.y / 2), 0), Quaternion.identity);
             cubeoutRange.layer = ObjToSlice.layer;
             cubeoutRange.tag = ObjToSlice.tag;
+
+            if (ObjToSlice.GetComponent<Rigidbody>() != null)
+            {
+                cubeoutRange.gameObject.AddComponent<Rigidbody>();
+            }
 
             RandColour(cubeoutRange);
 
@@ -161,6 +194,11 @@ public class DestructiveObject : MonoBehaviour
             cubeoutRange.layer = ObjToSlice.layer;
             cubeoutRange.tag = ObjToSlice.tag;
 
+            if (ObjToSlice.GetComponent<Rigidbody>() != null)
+            {
+                cubeoutRange.gameObject.AddComponent<Rigidbody>();
+            }
+
             RandColour(cubeoutRange);
 
             cubeMesh.gameObject.GetComponent<Transform>().localScale = new Vector3(ObjToSlice.transform.localScale.x, ObjToSlice.transform.localScale.y, ObjToSlice.transform.localScale.z - cubeoutRange.transform.localScale.z);
@@ -176,6 +214,11 @@ public class DestructiveObject : MonoBehaviour
             GameObject cubeoutRange = Instantiate(cubeMesh, ObjToSlice.transform.position + new Vector3( 0, 0, (-ObjToSlice.transform.localScale.z / 2) + (cubeMesh.gameObject.GetComponent<Transform>().localScale.z / 2)), Quaternion.identity);
             cubeoutRange.layer = ObjToSlice.layer;
             cubeoutRange.tag = ObjToSlice.tag;
+
+            if (ObjToSlice.GetComponent<Rigidbody>() != null)
+            {
+                cubeoutRange.gameObject.AddComponent<Rigidbody>();
+            }
 
             RandColour(cubeoutRange);
 
@@ -194,20 +237,27 @@ public class DestructiveObject : MonoBehaviour
         float cubeWidth = ObjToDest.transform.localScale.x;
         float cubeHeight = ObjToDest.transform.localScale.y;
         float cubeDepth = ObjToDest.transform.localScale.z;
-        cubeMesh.gameObject.GetComponent<Transform>().localScale = new Vector3(brokenScale, brokenScale, brokenScale);
+
+        float brokenScaleX = cubeWidth / Mathf.RoundToInt(cubeWidth / brokenScale);
+        float brokenScaleY = cubeHeight / Mathf.RoundToInt(cubeHeight / brokenScale);
+        float brokenScaleZ = cubeDepth / Mathf.RoundToInt(cubeDepth / brokenScale);
+
+
+        cubeMesh.gameObject.GetComponent<Transform>().localScale = new Vector3(brokenScaleX, brokenScaleY, brokenScaleZ);
         
         //since the transform position is in the centre of the object, the loop has to go to the negative half of the width, height, and depth of the object to re-generate it without shifting it about.
-        for(float x = (-cubeWidth/2)+(brokenScale/2); x < cubeWidth/2; x += brokenScale)
+        for(float x = (-cubeWidth/2)+(brokenScaleX/2); x < cubeWidth/2; x += brokenScaleX)
         {
-            for (float y = -cubeHeight/2 + (brokenScale / 2); y < cubeHeight/2; y += brokenScale)
+            for (float y = -cubeHeight/2 + (brokenScaleY / 2); y < cubeHeight/2; y += brokenScaleY)
             {
-                for (float z = -cubeDepth/2 + (brokenScale / 2); z < cubeDepth / 2; z += brokenScale)
+                for (float z = -cubeDepth/2 + (brokenScaleZ / 2); z < cubeDepth / 2; z += brokenScaleZ)
                 {
                     GameObject cube = Instantiate(cubeMesh, ObjToDest.transform.position + new Vector3(x, y, z), Quaternion.identity);
+
                     cube.layer = ObjToDest.layer;
                     cube.tag = ObjToDest.tag;
                     RandColour(cube);
-                    if ((cube.transform.position-this.transform.position).magnitude < destructionRadius)
+                    if ((cube.transform.position-this.transform.position).magnitude < destructionRadius || ObjToDest.GetComponent<Rigidbody>() != null)
                     {
                         cube.AddComponent<Rigidbody>();
                         cube.GetComponent<Rigidbody>().AddForce(((cube.transform.position-this.transform.position).normalized*destructionForce)/ (cube.transform.position - this.transform.position).magnitude, ForceMode.Impulse);
