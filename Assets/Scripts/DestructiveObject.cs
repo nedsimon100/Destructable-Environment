@@ -25,6 +25,10 @@ public class DestructiveObject : MonoBehaviour
     public float minDestructSpeed = 5f;
     private void Start()
     {
+        if (this.GetComponent<Rigidbody>() == null)
+        {
+            this.AddComponent<Rigidbody>();
+        }
         rb = GetComponent<Rigidbody>();
         //  brokenScale = cubeMesh.transform.localScale.x;
         Destructable = LayerMask.GetMask("Destructable");
@@ -50,15 +54,7 @@ public class DestructiveObject : MonoBehaviour
         }
         
     }
-    //private void OnCollisionStay(Collision collision)
-    //{
-    //    Non0Speed = 0f;
-    //}
 
-    //private void OnCollisionExit(Collision collision)
-    //{
-    //    Non0Speed = 1f;
-    //}
 
     private void destroyRange()
     {
@@ -70,12 +66,18 @@ public class DestructiveObject : MonoBehaviour
 
         foreach (Collider Obj in objectsToDestroy)
         {
-            if (Obj.gameObject.transform.localScale.x < brokenScale*2f) // if cube is less that the size of 8 broken cubes dont break and just adds rigidbody
+            if (Obj.GetComponent<Rigidbody>() != null && Obj.AddComponent<ObjectTimeOut>() != null)
+            {
+                // doesnt try to break or blow away cubes that have just been broken
+
+            }
+            else if (Obj.gameObject.transform.localScale.x < brokenScale*2f) // if cube is less that the size of 8 broken cubes dont break and just adds rigidbody
             {
                 if (Obj.GetComponent<Rigidbody>() == null)
                 {
-                    Obj.gameObject.AddComponent<Rigidbody>();
-                   
+                    Obj.AddComponent<Rigidbody>();
+                    Obj.AddComponent<ObjectTimeOut>();
+
                 }
                 Obj.gameObject.GetComponent<Rigidbody>().AddForce(((Obj.transform.position - this.transform.position).normalized * destructionForce) / (Obj.transform.position - this.transform.position).magnitude, ForceMode.Impulse);
             }
@@ -110,7 +112,7 @@ public class DestructiveObject : MonoBehaviour
 
             if (ObjToSlice.GetComponent<Rigidbody>() != null)
             {
-                cubeoutRange.gameObject.AddComponent<Rigidbody>();
+                cubeoutRange.AddComponent<ObjectTimeOut>();
             }
 
             RandColour(cubeoutRange);
@@ -119,6 +121,12 @@ public class DestructiveObject : MonoBehaviour
             GameObject cubeinRange = Instantiate(cubeMesh, new Vector3(((ObjToSlice.transform.position.x - (ObjToSlice.transform.localScale.x / 2)) + cubeMesh.gameObject.GetComponent<Transform>().localScale.x/2), ObjToSlice.transform.position.y, ObjToSlice.transform.position.z), Quaternion.identity);
             cubeinRange.layer = ObjToSlice.layer;
             cubeinRange.tag = ObjToSlice.tag;
+
+            if (ObjToSlice.GetComponent<Rigidbody>() != null)
+            {
+                cubeinRange.AddComponent<ObjectTimeOut>();
+            }
+
             Destroy(ObjToSlice);
             return sliceShape(cubeinRange);
         }
@@ -131,7 +139,7 @@ public class DestructiveObject : MonoBehaviour
 
             if (ObjToSlice.GetComponent<Rigidbody>() != null)
             {
-                cubeoutRange.gameObject.AddComponent<Rigidbody>();
+                cubeoutRange.AddComponent<ObjectTimeOut>();
             }
 
             RandColour(cubeoutRange);
@@ -140,6 +148,12 @@ public class DestructiveObject : MonoBehaviour
             GameObject cubeinRange = Instantiate(cubeMesh, new Vector3(((ObjToSlice.transform.position.x + (ObjToSlice.transform.localScale.x / 2)) - cubeMesh.gameObject.GetComponent<Transform>().localScale.x / 2), ObjToSlice.transform.position.y, ObjToSlice.transform.position.z), Quaternion.identity);
             cubeinRange.layer = ObjToSlice.layer;
             cubeinRange.tag = ObjToSlice.tag;
+
+            if (ObjToSlice.GetComponent<Rigidbody>() != null)
+            {
+                cubeinRange.AddComponent<ObjectTimeOut>();
+            }
+
             Destroy(ObjToSlice);
             return sliceShape(cubeinRange);
         }
@@ -153,7 +167,7 @@ public class DestructiveObject : MonoBehaviour
 
             if (ObjToSlice.GetComponent<Rigidbody>() != null)
             {
-                cubeoutRange.gameObject.AddComponent<Rigidbody>();
+                cubeoutRange.AddComponent<ObjectTimeOut>();
             }
 
             RandColour(cubeoutRange);
@@ -162,6 +176,12 @@ public class DestructiveObject : MonoBehaviour
             GameObject cubeinRange = Instantiate(cubeMesh, new Vector3( ObjToSlice.transform.position.x, ((ObjToSlice.transform.position.y - (ObjToSlice.transform.localScale.y / 2)) + cubeMesh.gameObject.GetComponent<Transform>().localScale.y / 2), ObjToSlice.transform.position.z), Quaternion.identity);
             cubeinRange.layer = ObjToSlice.layer;
             cubeinRange.tag = ObjToSlice.tag;
+
+            if (ObjToSlice.GetComponent<Rigidbody>() != null)
+            {
+                cubeinRange.AddComponent<ObjectTimeOut>();
+            }
+
             Destroy(ObjToSlice);
             return sliceShape(cubeinRange);
         }
@@ -174,7 +194,7 @@ public class DestructiveObject : MonoBehaviour
 
             if (ObjToSlice.GetComponent<Rigidbody>() != null)
             {
-                cubeoutRange.gameObject.AddComponent<Rigidbody>();
+                cubeoutRange.AddComponent<ObjectTimeOut>();
             }
 
             RandColour(cubeoutRange);
@@ -183,6 +203,12 @@ public class DestructiveObject : MonoBehaviour
             GameObject cubeinRange = Instantiate(cubeMesh, new Vector3( ObjToSlice.transform.position.x, ((ObjToSlice.transform.position.y + (ObjToSlice.transform.localScale.y / 2)) - cubeMesh.gameObject.GetComponent<Transform>().localScale.y / 2), ObjToSlice.transform.position.z), Quaternion.identity);
             cubeinRange.layer = ObjToSlice.layer;
             cubeinRange.tag = ObjToSlice.tag;
+
+            if (ObjToSlice.GetComponent<Rigidbody>() != null)
+            {
+                cubeinRange.AddComponent<ObjectTimeOut>();
+            }
+
             Destroy(ObjToSlice);
             return sliceShape(cubeinRange);
         }
@@ -196,7 +222,7 @@ public class DestructiveObject : MonoBehaviour
 
             if (ObjToSlice.GetComponent<Rigidbody>() != null)
             {
-                cubeoutRange.gameObject.AddComponent<Rigidbody>();
+                cubeoutRange.AddComponent<ObjectTimeOut>();
             }
 
             RandColour(cubeoutRange);
@@ -205,6 +231,12 @@ public class DestructiveObject : MonoBehaviour
             GameObject cubeinRange = Instantiate(cubeMesh, new Vector3(ObjToSlice.transform.position.x, ObjToSlice.transform.position.y, ((ObjToSlice.transform.position.z - (ObjToSlice.transform.localScale.z / 2)) + cubeMesh.gameObject.GetComponent<Transform>().localScale.z / 2)), Quaternion.identity);
             cubeinRange.layer = ObjToSlice.layer;
             cubeinRange.tag = ObjToSlice.tag;
+
+            if (ObjToSlice.GetComponent<Rigidbody>() != null)
+            {
+                cubeinRange.AddComponent<ObjectTimeOut>();
+            }
+
             Destroy(ObjToSlice);
             return sliceShape(cubeinRange);
         }
@@ -217,7 +249,7 @@ public class DestructiveObject : MonoBehaviour
 
             if (ObjToSlice.GetComponent<Rigidbody>() != null)
             {
-                cubeoutRange.gameObject.AddComponent<Rigidbody>();
+                cubeoutRange.AddComponent<ObjectTimeOut>();
             }
 
             RandColour(cubeoutRange);
@@ -226,7 +258,14 @@ public class DestructiveObject : MonoBehaviour
             GameObject cubeinRange = Instantiate(cubeMesh, new Vector3(ObjToSlice.transform.position.x, ObjToSlice.transform.position.y, ((ObjToSlice.transform.position.z + (ObjToSlice.transform.localScale.z / 2)) - cubeMesh.gameObject.GetComponent<Transform>().localScale.z / 2)), Quaternion.identity);
             cubeinRange.layer = ObjToSlice.layer;
             cubeinRange.tag = ObjToSlice.tag;
+
+            if (ObjToSlice.GetComponent<Rigidbody>() != null)
+            {
+                cubeinRange.AddComponent<ObjectTimeOut>();
+            }
+
             Destroy(ObjToSlice);
+
             return sliceShape(cubeinRange);
         }
         return ObjToSlice;
@@ -259,12 +298,19 @@ public class DestructiveObject : MonoBehaviour
                     RandColour(cube);
                     if ((cube.transform.position-this.transform.position).magnitude < destructionRadius || ObjToDest.GetComponent<Rigidbody>() != null)
                     {
+                        
                         cube.AddComponent<Rigidbody>();
+                        cube.AddComponent<ObjectTimeOut>();
                         cube.GetComponent<Rigidbody>().AddForce(((cube.transform.position-this.transform.position).normalized*destructionForce)/ (cube.transform.position - this.transform.position).magnitude, ForceMode.Impulse);
                     }
                 }
             }
         }
         Destroy(ObjToDest);
+    }
+
+    public void addRBandTimeOut(GameObject obj)
+    {
+
     }
 }
