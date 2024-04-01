@@ -29,22 +29,24 @@ public class ObjectTimeOut : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(shrinkTime);
-            this.transform.localScale *= 0.9996f;
+            this.transform.localScale *= 0.9999f;
         }
     }
 
     IEnumerator destroyRB()
     {
-        while (true)
+        bool moving = true;
+        while (moving)
         {
             yield return new WaitForSeconds(5f);
-            if (this.GetComponent<Rigidbody>() != null && rb.velocity.magnitude == 0f)
+            if (this.GetComponent<Rigidbody>() != null && rb.velocity.magnitude <= 0.05f)
             {
                 Destroy(rb);
-                if (this.transform.localScale.magnitude > 0.25f)
+                if (this.transform.localScale.magnitude >= 0.25f)
                 {
                     Destroy(this);
                 }
+                moving = false;
             }
             
         }
@@ -53,7 +55,7 @@ public class ObjectTimeOut : MonoBehaviour
     public void FixedUpdate()
     {
         
-        if (this.transform.localScale.magnitude < 0.05f)
+        if (this.transform.localScale.magnitude < 0.01f)
         {
             Destroy(this.gameObject);
         }
