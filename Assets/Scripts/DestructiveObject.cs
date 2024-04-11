@@ -88,6 +88,10 @@ public class DestructiveObject : MonoBehaviour
                     case "Cubic":
                         CubicDestruction(sliceShape(Obj.gameObject));
                         break;
+
+                    case "Prefab":
+                        prefabDestruction(Obj.gameObject);
+                        break;
                 }
             }
 
@@ -307,6 +311,33 @@ public class DestructiveObject : MonoBehaviour
             }
         }
         Destroy(ObjToDest);
+    }
+
+    public void prefabDestruction(GameObject objTODest)
+    {
+        if (objTODest.gameObject.GetComponent<PrefabSwitch>().DestroyedPrefab != null)
+        {
+            GameObject replacement = Instantiate(objTODest.gameObject.GetComponent<PrefabSwitch>().DestroyedPrefab, objTODest.transform.position, Quaternion.identity);
+            Destroy(objTODest);
+            for(int i =0;i< replacement.transform.childCount ; i++)
+            {
+                GameObject piece = replacement.transform.GetChild(i).gameObject;
+
+                if ((piece.transform.position - this.transform.position).magnitude < destructionRadius || objTODest.GetComponent<Rigidbody>() != null)
+                {
+
+                    piece.AddComponent<Rigidbody>();
+                    piece.AddComponent<ObjectTimeOut>();
+                    piece.GetComponent<Rigidbody>().AddForce(((piece.transform.position - this.transform.position).normalized * destructionForce) / (piece.transform.position - this.transform.position).magnitude, ForceMode.Impulse);
+                }
+            }
+            
+        }
+        else
+        {
+            Debug.Log("No replacement prefab ready for prefab destruction");
+        }
+        
     }
 
     public void addRBandTimeOut(GameObject obj)
