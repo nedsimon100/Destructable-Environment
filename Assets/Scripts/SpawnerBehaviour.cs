@@ -11,8 +11,8 @@ public class SpawnerBehaviour : MonoBehaviour
     public int MaxSpawnCount = 1;
 
     private Queue<GameObject> spawnQueue = new Queue<GameObject>();
-    private float timerCurrent = 0.0f;
-    private Vector3[] SpawnBounds = new Vector3[1];
+    public float timerCurrent = 0.0f;
+    private Vector3[] SpawnBounds = new Vector3[2];
 
     private GameObject temp;
 
@@ -28,24 +28,37 @@ public class SpawnerBehaviour : MonoBehaviour
         {
             SpawnDelay = 0.1f;
         }
-        //SpawnBounds[0] = new Vector3
+        SpawnBounds[0] = transform.position - (SpawnRegion.size / 2.0f);
+        SpawnBounds[1] = transform.position + (SpawnRegion.size / 2.0f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (spawnQueue.Count >= MaxSpawnCount)//removes first instance spawned by spawner
+        if (timerCurrent >= SpawnDelay)//if time to spawn
         {
-            temp = spawnQueue.Dequeue();
-            Destroy(temp);
-            temp = null;
+            timerCurrent = 0.0f;
+            if (spawnQueue.Count >= MaxSpawnCount && CullAndSpawnNew)//removes first instance spawned by spawner if enabled
+            {
+                temp = spawnQueue.Dequeue();
+                Destroy(temp);
+                temp = null;
+            }
+
+            if (spawnQueue.Count < MaxSpawnCount)
+            {
+                Vector3 rndPos = new Vector3(Random.Range(SpawnBounds[0].x, SpawnBounds[1].x), Random.Range(SpawnBounds[0].y, SpawnBounds[1].y), Random.Range(SpawnBounds[0].z, SpawnBounds[1].z));
+
+                temp = Instantiate(ObjectToSpawn, rndPos, transform.rotation);
+                spawnQueue.Enqueue(temp);
+                temp = null;
+            }
+        }
+        else
+        {
+            timerCurrent += Time.deltaTime;
         }
 
-        if (spawnQueue.Count > MaxSpawnCount)
-        {
-            
-
-            //temp = Instantiate(ObjectToSpawn,)
-        }
+        
     }
 }
