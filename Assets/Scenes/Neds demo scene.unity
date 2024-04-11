@@ -154,8 +154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1deb7fe2c8eb8b418c947fed32ed3a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xSensitivity: 100
-  ySensitivity: 100
+  xSensitivity: 1000
+  ySensitivity: 1000
   ForwardSpeed: 10
   strafeSpeed: 7.7
   MoveSpeed: 25
