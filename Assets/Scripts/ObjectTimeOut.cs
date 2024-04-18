@@ -41,7 +41,7 @@ public class ObjectTimeOut : MonoBehaviour
             yield return new WaitForSeconds(5f);
             if (this.GetComponent<Rigidbody>() != null && rb.velocity.magnitude <= 0.05f)
             {
-                //Destroy(rb); //remove rigid body ater set time
+                //Destroy(rb); //remove rigid body after set time
                 if (this.transform.localScale.magnitude >= 0.25f)
                 {
                     Destroy(this);
