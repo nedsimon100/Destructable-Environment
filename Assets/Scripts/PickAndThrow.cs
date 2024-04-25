@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PickAndThrow : MonoBehaviour
 {
+    public GameObject cubeMesh;
     private GameObject heldObject;
     public float radius = 2f;
     public float distance = 1f;
@@ -39,6 +40,12 @@ public class PickAndThrow : MonoBehaviour
                     rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
                     rigidbody.drag = 25f;
                     rigidbody.useGravity = false;
+
+                    var destructiveScript = heldObject.AddComponent<DestructiveObject>();
+
+                    // Set the cube mesh in the Destructive script
+                    destructiveScript.cubeMesh = cubeMesh;
+
                 }
             }
         }
