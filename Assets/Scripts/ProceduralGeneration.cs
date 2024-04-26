@@ -8,12 +8,12 @@ public class ProceduralGeneration : MonoBehaviour
 
     public List<GameObject> cantSpawn;
 
-    public FPSMovement player;
+    public Camera player;
 
     public bool spawned = false;
     void Start()
     {
-        player = FindObjectOfType<FPSMovement>();
+        player = Camera.main;
         if (transform.position.x > 25 || transform.position.z > 25)
         {
             Destroy(this.gameObject);
