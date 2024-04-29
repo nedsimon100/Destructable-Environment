@@ -21,6 +21,7 @@ public class DestructiveObject : MonoBehaviour
 
     public float destructionForce = 6f;
 
+    public bool debugging;
 
     public float minDestructSpeed = 5f;
     private void Start()
@@ -32,6 +33,7 @@ public class DestructiveObject : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         //  brokenScale = cubeMesh.transform.localScale.x;
         Destructable = LayerMask.GetMask("Destructable");
+        destructionForce *= this.transform.localScale.x;
     }
 
     private void Update()
@@ -44,9 +46,9 @@ public class DestructiveObject : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
 
-        if (Non0Speed > minDestructSpeed)
+        if (Non0Speed > minDestructSpeed) // only causes destruction if projectile is moving faster than a certain speed so it doesnt constantly destroy everything around it
         {
-            destructionRadius = (this.transform.localScale.x / 2) + (Non0Speed * blastRadiusMult);
+            destructionRadius = (this.transform.localScale.x / 2) + (Non0Speed * blastRadiusMult * this.transform.localScale.x);
 
             Non0Speed = 0f;
 
@@ -92,6 +94,8 @@ public class DestructiveObject : MonoBehaviour
                     case "Prefab":
                         prefabDestruction(Obj.gameObject);
                         break;
+
+                        // can add more destruction styles using switch system to add more variety into a game.
                 }
             }
 
@@ -100,11 +104,14 @@ public class DestructiveObject : MonoBehaviour
 
     public void RandColour(GameObject obj) // for debugging to show different shapes and how object was destroyed
     {
+        if (debugging)
+        {
+            obj.GetComponent<Renderer>().material.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
 
-        obj.GetComponent<Renderer>().material.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+        }
     }
 
-    public GameObject sliceShape(GameObject ObjToSlice)
+    public GameObject sliceShape(GameObject ObjToSlice) // slices out the undamaged parts of the damaged gameobject to reduce the amount of objects created in scene
     {
         //slice x scale of shape to fit damage radius
         if (ObjToSlice.transform.position.x + (ObjToSlice.transform.localScale.x / 2) > (this.transform.position.x + destructionRadius) + brokenScale)
@@ -282,7 +289,7 @@ public class DestructiveObject : MonoBehaviour
         float cubeDepth = ObjToDest.transform.localScale.z;
 
         float brokenScaleX = cubeWidth / Mathf.CeilToInt(cubeWidth / brokenScale);
-        float brokenScaleY = cubeHeight / Mathf.CeilToInt(cubeHeight / brokenScale);
+        float brokenScaleY = cubeHeight / Mathf.CeilToInt(cubeHeight / brokenScale); // rounds up scale so it perfectly fits damaged area
         float brokenScaleZ = cubeDepth / Mathf.CeilToInt(cubeDepth / brokenScale);
 
 
@@ -317,13 +324,13 @@ public class DestructiveObject : MonoBehaviour
     {
         if (objTODest.gameObject.GetComponent<PrefabSwitch>().DestroyedPrefab != null)
         {
-            GameObject replacement = Instantiate(objTODest.gameObject.GetComponent<PrefabSwitch>().DestroyedPrefab, objTODest.transform.position, Quaternion.identity);
+            GameObject replacement = Instantiate(objTODest.gameObject.GetComponent<PrefabSwitch>().DestroyedPrefab, objTODest.transform.position, Quaternion.identity); // finds attached broken prefab to switch with the original
             Destroy(objTODest);
             for(int i =0;i< replacement.transform.childCount ; i++)
             {
                 GameObject piece = replacement.transform.GetChild(i).gameObject;
 
-                if ((piece.transform.position - this.transform.position).magnitude < destructionRadius || objTODest.GetComponent<Rigidbody>() != null)
+                if ((piece.transform.position - this.transform.position).magnitude < destructionRadius || objTODest.GetComponent<Rigidbody>() != null) // adds physics to broken pieces in the destruction range
                 {
 
                     piece.AddComponent<Rigidbody>();
@@ -340,8 +347,5 @@ public class DestructiveObject : MonoBehaviour
         
     }
 
-    public void addRBandTimeOut(GameObject obj)
-    {
 
-    }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Shoot : MonoBehaviour
 {
@@ -15,10 +16,14 @@ public class Shoot : MonoBehaviour
 
     private GameObject objToFire;
     public List<GameObject> possibleProjectiles = new List<GameObject>();
+
+    public bool debugging=false;
     void Start()
     {
         objToFire = Instantiate(possibleProjectiles[Random.Range(0, possibleProjectiles.Count)], this.transform.position + spawnOffset, Quaternion.identity);
         objToFire.GetComponent<Collider>().enabled = false;
+        objToFire.GetComponent<Renderer>().material.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+        objToFire.transform.localScale *= Random.Range(0.4f, 2.2f);
     }
 
     // Update is called once per frame
@@ -31,17 +36,28 @@ public class Shoot : MonoBehaviour
         {
             fire();
         }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            debugging = !debugging;
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 
     public void fire()
     {
         objToFire.AddComponent<Rigidbody>();
         objToFire.AddComponent<DestructiveObject>();
-        objToFire.AddComponent<DestructiveObject>().cubeMesh = this.cubeMesh;
+        objToFire.GetComponent<DestructiveObject>().cubeMesh = this.cubeMesh;
+        objToFire.GetComponent<DestructiveObject>().debugging = this.debugging;
         objToFire.GetComponent<Rigidbody>().AddForce(aim * ShootForce);
         objToFire.GetComponent<Collider>().enabled = true;
 
         objToFire = Instantiate(possibleProjectiles[Random.Range(0, possibleProjectiles.Count)], this.transform.position + spawnOffset, Quaternion.identity);
         objToFire.GetComponent<Collider>().enabled = false;
+        objToFire.GetComponent<Renderer>().material.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+        objToFire.transform.localScale *= Random.Range(0.4f, 2.2f);
     }
 }

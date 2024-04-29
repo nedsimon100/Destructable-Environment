@@ -11,6 +11,8 @@ public class ProceduralGeneration : MonoBehaviour
     public Camera player;
 
     public bool spawned = false;
+
+
     void Start()
     {
         player = Camera.main;

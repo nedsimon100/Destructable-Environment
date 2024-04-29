@@ -6,7 +6,7 @@ using UnityEngine.PlayerLoop;
 
 public class ObjectTimeOut : MonoBehaviour
 {
-    public float shrinkTime = 0.02f;
+    public float shrinkTime = 0.05f;
     public Rigidbody rb;
     void Start()
     {
@@ -29,7 +29,7 @@ public class ObjectTimeOut : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(shrinkTime);
-            this.transform.localScale *= 0.9999f;
+            this.transform.localScale *= 0.999f;
         }
     }
 

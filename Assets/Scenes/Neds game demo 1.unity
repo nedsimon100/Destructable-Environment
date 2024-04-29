@@ -275,10 +275,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeMesh: {fileID: 7615598292693902461, guid: 59b944aebc8e49b4bb8e03996cee3bb2,
     type: 3}
-  ShootForce: 75
+  ShootForce: 60
   spawnOffset: {x: 0, y: -0.5, z: 1}
   possibleProjectiles:
   - {fileID: 1317274553777801980, guid: ccd9d96deb9fede43a91c1fb32d3a95f, type: 3}
+  - {fileID: 5757378156771118833, guid: bc27e72e68a62634cb15f3e467544bb1, type: 3}
+  - {fileID: 2334172333823669461, guid: 539972861d11ee948b187431a031fc63, type: 3}
+  - {fileID: 2984159605579682377, guid: 6056adfde5307104583f38dd71410083, type: 3}
+  debugging: 1
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
