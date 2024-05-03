@@ -39,7 +39,7 @@ public class DestructiveObject : MonoBehaviour
     private void Update()
     {
         if (rb.velocity.magnitude > 0)
-        {
+        {// update speed so that it dosent fail if the rigidbody velocity becomes zero when it collides with an object
             Non0Speed = rb.velocity.magnitude;
         }
     }

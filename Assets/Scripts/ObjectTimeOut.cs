@@ -6,7 +6,7 @@ using UnityEngine.PlayerLoop;
 
 public class ObjectTimeOut : MonoBehaviour
 {
-    public float shrinkTime = 0.05f;
+    public float shrinkTime = 0.05f; // how long it should take while its shrinking
     public Rigidbody rb;
     void Start()
     {
@@ -41,7 +41,7 @@ public class ObjectTimeOut : MonoBehaviour
             yield return new WaitForSeconds(5f);
             if (this.GetComponent<Rigidbody>() != null && rb.velocity.magnitude <= 0.05f)
             {
-                //Destroy(rb); //remove rigid body after set time
+                Destroy(rb); //remove rigid body after set time
                 if (this.transform.localScale.magnitude >= 0.25f)
                 {
                     Destroy(this);
