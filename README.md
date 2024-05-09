@@ -3,9 +3,10 @@
 
 resources used:
 
+Destruction Source code based on the work of Leo Svanå.
 
-voxel based destruction:
-https://www.youtube.com/watch?v=MEqH46rosWA
+Svanå, Leo (2021) Voxel Destruction Physics | Unity Tutorial. Available at: https://www.youtube.com/watch?v=MEqH46rosWA 
+(Accessed: 13 February 2024).
 
 Prefab based destruction:
 https://www.youtube.com/watch?v=EgNV0PWVaS8
